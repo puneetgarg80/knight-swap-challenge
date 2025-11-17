@@ -51,7 +51,16 @@ const Walkthrough: React.FC<WalkthroughProps> = ({ onFinish }) => {
       let newPopoverStyle: React.CSSProperties = { visibility: 'visible' };
 
       if (!targetRect) {
-        newPopoverStyle = { ...newPopoverStyle, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+        // Manual centering to avoid transform conflict with animation
+        const top = (window.innerHeight - popoverRect.height) / 2;
+        const left = (window.innerWidth - popoverRect.width) / 2;
+        
+        newPopoverStyle = {
+            ...newPopoverStyle,
+            top: Math.max(margin, top),
+            left: Math.max(margin, left),
+        };
+
       } else {
         const placement = currentStep.placement || 'bottom';
         let top = 0;
