@@ -1,3 +1,4 @@
+
 export interface WalkthroughStep {
   title: string;
   content: string;
@@ -43,7 +44,7 @@ export const walkthroughSteps: WalkthroughStep[] = [
   },
   {
     title: 'Unlock a New Perspective',
-    content: 'After 50 moves, you\'ll unlock the "Map View," which reveals the puzzle\'s hidden structure. It might provide the breakthrough you need!',
+    content: 'Switch to "Map View" to reveal the puzzle\'s hidden linear structure. It might provide the breakthrough you need!',
     targetSelector: '[data-walkthrough="view-switcher"]',
     placement: 'bottom',
   },

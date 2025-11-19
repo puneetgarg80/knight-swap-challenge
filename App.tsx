@@ -29,7 +29,6 @@ const App: React.FC = () => {
 
   const currentBoard = history[history.length - 1];
   const moveCount = history.length - 1;
-  const isMapUnlocked = totalAttempts >= 50;
 
   useEffect(() => {
     try {
@@ -60,19 +59,14 @@ const App: React.FC = () => {
     );
   }, [selectedSquare, currentBoard]);
 
+  // Prompt the user to use AI helper if they are struggling (e.g., > 50 moves)
   useEffect(() => {
-    if (isMapUnlocked && !hasBeenPrompted && mainView === 'puzzle') {
+    if (totalAttempts >= 50 && !hasBeenPrompted && mainView === 'puzzle') {
       setShowInvestigationPrompt(true);
       setHasBeenPrompted(true);
     }
-  }, [isMapUnlocked, hasBeenPrompted, mainView]);
+  }, [totalAttempts, hasBeenPrompted, mainView]);
   
-  useEffect(() => {
-    if (!isMapUnlocked && view === 'map') {
-        setView('board');
-    }
-  }, [isMapUnlocked, view]);
-
   const checkWinCondition = useCallback((board: BoardState) => {
     const solved = SQUARE_NAMES.every(square => board[square] === TARGET_BOARD_STATE[square]);
     if (solved) {
@@ -179,7 +173,6 @@ const App: React.FC = () => {
                 onViewChange={setView}
                 isShowingTarget={isShowingTarget}
                 onToggleTarget={() => setIsShowingTarget(p => !p)}
-                isMapUnlocked={isMapUnlocked}
               />
               <div data-walkthrough="board-container" className={`relative w-full transition-all duration-300 ${isShowingTarget ? 'ring-2 ring-amber-400 rounded-lg shadow-lg' : ''}`}>
                  {isShowingTarget && <p className="absolute -top-6 left-0 right-0 text-center text-amber-400 text-sm font-semibold">TARGET STATE (VIEW-ONLY)</p>}
