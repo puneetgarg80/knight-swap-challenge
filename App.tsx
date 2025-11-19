@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react';
 import { type BoardState, type SquareName, type PieceType, SQUARE_NAMES } from './types';
 import { INITIAL_BOARD_STATE, TARGET_BOARD_STATE, LEGAL_MOVES } from './constants';
@@ -158,12 +157,12 @@ const App: React.FC = () => {
       <div className="flex-grow overflow-y-auto">
         {/* Puzzle View */}
         <div className={`${mainView === 'puzzle' ? 'flex' : 'hidden'} flex-col items-center p-4 min-h-full`}>
-            <header className="w-full text-center mb-8">
+            <header className="w-full text-center mb-2">
               <h1 className="text-4xl md:text-5xl font-bold text-cyan-400 mb-2">The Knight Swap Puzzle</h1>
               <p className="text-gray-300">Swap the positions of the white (♘) and black (♞) knights.</p>
             </header>
 
-            <main className="w-full flex flex-col items-center justify-center gap-8 max-w-[85vmin] md:max-w-2xl mb-8">
+            <main className="w-full flex flex-col items-center justify-center gap-2 max-w-[85vmin] md:max-w-2xl mb-2">
               <Controls 
                 moveCount={moveCount} 
                 onReset={handleReset} 
