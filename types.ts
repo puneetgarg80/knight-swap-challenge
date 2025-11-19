@@ -12,3 +12,8 @@ export type SquareContent = PieceType | null;
 export type BoardState = Record<SquareName, SquareContent>;
 
 export type MoveHistory = BoardState[];
+
+export interface ChatMessage {
+  role: 'user' | 'model';
+  text: string;
+}
