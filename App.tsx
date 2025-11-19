@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react';
 import { type BoardState, type SquareName, type PieceType, SQUARE_NAMES } from './types';
 import { INITIAL_BOARD_STATE, TARGET_BOARD_STATE, LEGAL_MOVES } from './constants';
@@ -146,7 +147,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-900 text-gray-100 flex flex-col font-sans">
+    <div className="h-[100dvh] bg-gray-900 text-gray-100 flex flex-col font-sans overflow-hidden">
       <Suspense fallback={null}>
         {showWalkthrough && <Walkthrough onFinish={handleFinishWalkthrough} />}
       </Suspense>

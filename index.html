@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,6 +7,11 @@
     <title>Knight Swap Challenge</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+      html, body {
+        height: 100%;
+        overflow: hidden; /* Prevent scrolling on the body, handle in app container */
+      }
+
       @keyframes fall {
         from {
           opacity: 1;
