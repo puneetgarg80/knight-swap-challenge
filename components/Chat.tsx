@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import { GoogleGenAI, Chat as GenAIChat } from '@google/genai';
+import { CHAT_SYSTEM_INSTRUCTION } from '../constants';
+
 
 interface Message {
   role: 'user' | 'model';
@@ -25,13 +27,12 @@ const Chat: React.FC = () => {
         chatRef.current = ai.chats.create({
           model: 'gemini-2.5-flash',
           config: {
-            systemInstruction: `You are a helpful AI assistant for a web-based puzzle game called 'The Knight Swap Puzzle'. The game involves moving knights on a custom chessboard to swap their positions. The board has 10 squares.
-            Your goal is to guide and help players who are stuck, without giving away the direct solution. You can offer hints, explain the rules in different ways, or discuss strategies related to graph theory, as the puzzle can be viewed as a graph problem (the 'Map View' in the game reveals this). Be encouraging and friendly.`,
+            systemInstruction: CHAT_SYSTEM_INSTRUCTION,
           },
         });
         
         // Start with a friendly, hardcoded greeting for better performance and reliability.
-        setMessages([{ role: 'model', text: "Hello! I'm your AI assistant for the Knight Swap Puzzle. How can I help you today?" }]);
+        setMessages([{ role: 'model', text: "Hello! I'm your AI assistant for the Knight Swap Puzzle. Do you need help?" }]);
       } catch (error) {
         console.error("Failed to initialize chat:", error);
         setMessages([{ role: 'model', text: "Sorry, I'm having trouble connecting right now. Please try again later." }]);
