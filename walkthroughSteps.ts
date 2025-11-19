@@ -44,13 +44,13 @@ export const walkthroughSteps: WalkthroughStep[] = [
   },
   {
     title: 'Unlock a New Perspective',
-    content: 'Switch to "Map View" to reveal the puzzle\'s hidden linear structure. It might provide the breakthrough you need!',
+    content: 'After 50 moves, you can unlock "Map View" to reveal the puzzle\'s hidden linear structure. It might provide the breakthrough you need!',
     targetSelector: '[data-walkthrough="view-switcher"]',
     placement: 'bottom',
   },
   {
-    title: 'AI Helper',
-    content: 'If you need a strategic hint (without spoilers), tap here to chat with our AI Helper.',
+    title: 'Unlock AI Helper',
+    content: 'Struggling? The AI Helper will also unlock after 50 moves to offer hints without giving away the answer.',
     targetSelector: '[data-walkthrough="ai-helper-tab"]',
     placement: 'top',
   },

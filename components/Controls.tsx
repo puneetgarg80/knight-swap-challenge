@@ -12,6 +12,7 @@ interface ControlsProps {
   onViewChange: (view: 'board' | 'map') => void;
   isShowingTarget: boolean;
   onToggleTarget: () => void;
+  isMapUnlocked: boolean;
 }
 
 const Button: React.FC<{ onClick: () => void; children: React.ReactNode; disabled?: boolean; className?: string }> = ({ onClick, children, disabled = false, className = '' }) => (
@@ -27,7 +28,7 @@ const Button: React.FC<{ onClick: () => void; children: React.ReactNode; disable
 );
 
 
-const Controls: React.FC<ControlsProps> = ({ moveCount, onReset, onUndo, canUndo, currentView, onViewChange, isShowingTarget, onToggleTarget }) => {
+const Controls: React.FC<ControlsProps> = ({ moveCount, onReset, onUndo, canUndo, currentView, onViewChange, isShowingTarget, onToggleTarget, isMapUnlocked }) => {
   return (
     <div className="flex flex-wrap items-center justify-between w-full bg-gray-800/50 p-3 rounded-lg gap-4">
       <div className="text-lg" data-walkthrough="move-counter">
@@ -37,6 +38,7 @@ const Controls: React.FC<ControlsProps> = ({ moveCount, onReset, onUndo, canUndo
         <ViewSwitcher 
           currentView={currentView} 
           onViewChange={onViewChange} 
+          isMapUnlocked={isMapUnlocked}
         />
       </div>
       <div className="flex items-center gap-4">

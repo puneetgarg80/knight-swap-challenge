@@ -30,6 +30,9 @@ const App: React.FC = () => {
   const currentBoard = history[history.length - 1];
   const moveCount = history.length - 1;
 
+  // Lock Map View and AI Helper until 50 attempts are made
+  const areFeaturesUnlocked = totalAttempts >= 50;
+
   useEffect(() => {
     try {
       const hasSeenWalkthrough = localStorage.getItem('knightSwapWalkthroughSeen');
@@ -130,18 +133,22 @@ const App: React.FC = () => {
   const boardToDisplay = isShowingTarget ? TARGET_BOARD_STATE : currentBoard;
   const clickHandler = isShowingTarget || isSolved || showWalkthrough ? () => {} : handleSquareClick;
 
-  const BottomNavButton: React.FC<{ view: MainView; label: string; children: React.ReactNode; }> = ({ view, label, children }) => {
+  const BottomNavButton: React.FC<{ view: MainView; label: string; children: React.ReactNode; disabled?: boolean }> = ({ view, label, children, disabled }) => {
     const isActive = mainView === view;
     return (
       <button
-        onClick={() => setMainView(view)}
-        className={`flex flex-col items-center justify-center gap-1 w-28 h-14 rounded-lg font-semibold text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 ${
+        onClick={() => !disabled && setMainView(view)}
+        disabled={disabled}
+        className={`relative flex flex-col items-center justify-center gap-1 w-28 h-14 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 ${
           isActive ? 'bg-cyan-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-        }`}
+        } ${disabled ? 'opacity-50 cursor-not-allowed grayscale' : ''}`}
         aria-label={`Switch to ${label} view`}
       >
         {children}
-        <span className="text-xs font-medium tracking-wide">{label}</span>
+        <span className="text-xs font-medium tracking-wide flex items-center gap-1">
+          {label}
+          {disabled && <span className="text-[10px]">🔒</span>}
+        </span>
       </button>
     );
   };
@@ -173,6 +180,7 @@ const App: React.FC = () => {
                 onViewChange={setView}
                 isShowingTarget={isShowingTarget}
                 onToggleTarget={() => setIsShowingTarget(p => !p)}
+                isMapUnlocked={areFeaturesUnlocked}
               />
               <div data-walkthrough="board-container" className={`relative w-full transition-all duration-300 ${isShowingTarget ? 'ring-2 ring-amber-400 rounded-lg shadow-lg' : ''}`}>
                  {isShowingTarget && <p className="absolute -top-6 left-0 right-0 text-center text-amber-400 text-sm font-semibold">TARGET STATE (VIEW-ONLY)</p>}
@@ -232,7 +240,7 @@ const App: React.FC = () => {
                 </svg>
               </BottomNavButton>
               <div data-walkthrough="ai-helper-tab">
-                <BottomNavButton view="chat" label="AI Helper">
+                <BottomNavButton view="chat" label="AI Helper" disabled={!areFeaturesUnlocked}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>

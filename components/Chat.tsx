@@ -14,12 +14,16 @@ if (!process.env.API_KEY) {
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
 
+const MAX_MESSAGES = 40;
+
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const chatRef = useRef<GenAIChat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const isLimitReached = messages.length >= MAX_MESSAGES;
 
   useEffect(() => {
     const initializeChat = () => {
@@ -47,7 +51,7 @@ const Chat: React.FC = () => {
 
   const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim() || isLoading || !chatRef.current) return;
+    if (!inputValue.trim() || isLoading || !chatRef.current || isLimitReached) return;
 
     const userMessage: Message = { role: 'user', text: inputValue };
     setMessages(prev => [...prev, userMessage]);
@@ -93,6 +97,13 @@ const Chat: React.FC = () => {
               </div>
             </div>
           )}
+          {isLimitReached && (
+            <div className="flex justify-center py-2">
+               <div className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-full text-gray-400 text-sm">
+                 Message limit reached ({MAX_MESSAGES}).
+               </div>
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
       </div>
@@ -102,14 +113,14 @@ const Chat: React.FC = () => {
             type="text"
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
-            placeholder="Ask for a hint..."
-            disabled={isLoading}
-            className="w-full bg-transparent p-3 text-gray-200 placeholder-gray-400 focus:outline-none"
+            placeholder={isLimitReached ? "Message limit reached" : "Ask for a hint..."}
+            disabled={isLoading || isLimitReached}
+            className="w-full bg-transparent p-3 text-gray-200 placeholder-gray-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Chat input"
           />
           <button
             type="submit"
-            disabled={isLoading || !inputValue.trim()}
+            disabled={isLoading || !inputValue.trim() || isLimitReached}
             className="p-3 text-cyan-400 hover:text-cyan-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors"
             aria-label="Send message"
           >
